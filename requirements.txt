@@ -1,0 +1,2 @@
+Flask
+git+https://github.com/mitsuhiko/flask-oauth
