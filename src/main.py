@@ -1,15 +1,20 @@
 from flask import Flask, send_from_directory, session, url_for, request, flash, redirect, render_template
+from authlib.flask.client import OAuth
 import os
 import sqlite3
 from post import Post
 
 app = Flask(__name__)
+
 # totally secret
 # security for this app is a joke
 # because this app is a joke
 app.secret_key = 'CRAWWWW'
 
-@app.route('/')
+
+# app.register_blueprint(newcaw)
+
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/index.html')
 def landing():
     if 'user_id' in session and session['user_id']:
@@ -39,6 +44,7 @@ def caw():
             user_id = session['user_id']
             message = request.form['le_caw']
             # TODO post this to the thing
+            # TODO: actual functional logic to add the post to the database
     # not logged in, yell at them to log in
     return redirect('/')
 
