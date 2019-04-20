@@ -3,6 +3,7 @@ import os
 import sqlite3
 from post import Post
 import hashlib
+import time
 
 app = Flask(__name__)
 
@@ -35,6 +36,7 @@ def init_db(db):
     cur.execute('''
         CREATE TABLE IF NOT EXISTS posts
         (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        author TEXT,
         content TEXT,
         posted INTEGER,
         fries INTEGER)
@@ -78,6 +80,16 @@ def logout():
         session['user_id'] = None
     return redirect('/')
 
+def post_messge(author: str, message: str):
+    """
+    submits a post
+    """
+    with app.app_context():
+        db = get_db()
+        cur = db.cursor()
+        cur.execute('''INSERT INTO posts (content, posted, fries, author) VALUES (?, ?, ?, ?);''', (message, (int)time.time(), 1, author))
+        db.commit()
+
 @app.route('/caw', methods=['POST'])
 def caw():
     """
@@ -89,9 +101,9 @@ def caw():
         # logged in
         if 'le_caw' in request.form and request.form['le_caw']:
             user_id = session['user_id']
+            username = session['username']
             message = request.form['le_caw']
-            # TODO post this to the thing
-            # TODO: actual functional logic to add the post to the database
+            post_messge(username, message)
     # not logged in, yell at them to log in
     return redirect('/')
 
@@ -134,8 +146,8 @@ def login():
         print('got id', id)
         if id:
             session['user_id'] = id
+            session['username'] = username
     return redirect('/')
-
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
