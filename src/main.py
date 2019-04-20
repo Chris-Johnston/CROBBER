@@ -59,7 +59,6 @@ def close_db_connection(exception):
     if db is not None:
         db.close()
 
-
 # app.register_blueprint(newcaw)
 
 @app.route('/', methods=['GET', 'POST'])
