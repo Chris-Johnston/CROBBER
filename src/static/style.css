@@ -1,0 +1,27 @@
+.caw img
+{
+    max-width: 100px;
+    display: inline;
+}
+
+.caw .author, .caw .message
+{
+    display: inline-block;
+}
+
+.caw .author
+{ 
+    font-weight: bold;
+}
+.caw .message
+{
+    font-style: italic;
+}
+
+.caw
+{
+    border-radius: 20px;
+    padding: 30px;
+    margin: 20px;
+    border: 1px dashed gray;
+}
