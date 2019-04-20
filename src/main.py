@@ -2,6 +2,7 @@ from flask import Flask, send_from_directory, session, url_for, request, flash, 
 import os
 import sqlite3
 from post import Post
+import hashlib
 
 app = Flask(__name__)
 
@@ -16,7 +17,39 @@ def get_db():
     db = getattr(g, '_database', None)
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
+        # init the database if not exists
+        init_db(db)
     return db
+
+def init_db(db):
+    """
+    Creates db tables if not already set up
+    """
+    cur = db.cursor()
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS users 
+        (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT,
+        password TEXT)
+    ''')
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS posts
+        (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        content TEXT,
+        posted INTEGER,
+        fries INTEGER)
+    ''')
+    # crows love fries, fries are the points
+
+def get_posts():
+    with app.app_context():
+        print('getting posts')
+        cur = get_db().cursor()
+        cur.execute("SELECT * FROM posts ORDER BY posted DESC LIMIT 50")
+        posts = []
+        for row in cur.fetchall():
+            print(row)
+        
 
 @app.teardown_appcontext
 def close_db_connection(exception):
@@ -30,6 +63,7 @@ def close_db_connection(exception):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index.html')
 def landing():
+    get_posts()
     if 'user_id' in session and session['user_id']:
         # logged in
         return render_template('homepage.html', user_id = session['user_id'],
@@ -61,6 +95,29 @@ def caw():
     # not logged in, yell at them to log in
     return redirect('/')
 
+def get_user_id(username: str, password: str) -> int:
+    """
+    gets the user id for the user, registers them if not
+    if wrong, returns None
+    """
+    with app.app_context():
+        db = get_db()
+        cur = db.cursor()
+        hash_pw = hashlib.sha256(password.encode('utf-8'))
+        hash_str = hash_pw.hexdigest()
+        # print(hash_str)
+        cur.execute('SELECT id FROM users WHERE username = ? AND password = ?', (username, hash_str,))
+        result = cur.fetchone()
+        # print(result)
+        if result is None:
+            print(f'inserting user {username}')
+            cur.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, hash_str,))
+            db.commit()
+            return cur.lastrowid
+        else:
+            return result[0]
+    return None
+
 @app.route('/craww', methods=['POST'])
 @app.route('/login', methods=['POST'])
 def login():
@@ -68,11 +125,15 @@ def login():
     Login route, accept a user and password,
     if successful, stores a logged in user id in the session
     """
+    session['user_id'] = None
     if 'username' in request.form and 'password' in request.form:
         username = request.form['username']
         password = request.form['password']
-        print('user', username, 'password', password)
-    session['user_id'] = 1337
+        # print('user', username, 'password', password)
+        id = get_user_id(username, password)
+        print('got id', id)
+        if id:
+            session['user_id'] = id
     return redirect('/')
 
 
