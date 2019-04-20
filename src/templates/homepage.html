@@ -3,6 +3,7 @@
     <head>
         <title>CROBBER, Social Media for CROBS</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/style.css">
     </head>
     <body>
         <nav class="navbar navbar-dark bg-dark">
@@ -11,19 +12,20 @@
 
         <div class="container">
             <h1>
-                YEET {{ user_id }}
+                Sup {{ username }}
             </h1>
             <h3>Tell your fellow crobs how you're cawwing today.</h2>
             <form method="POST" action="/caw">
-                <textarea name="le_caw" placeholder="cawwwww"></textarea>
+                <input type="text" name="le_caw" placeholder="cawwwww"></input>
                 <button type="submit">Caw</button>
             </form>
             <div class="posts">
                 {% for p in posts %}
                 <div class="caw">
-                    <div class="author">{{ p.author }}</div>
+                    <img src="/static/img/{{ p.img }}.png" />
+                    <div class="author">@{{ p.author }}</div>
                     <!-- TODO CROBATARS -->
-                    <div class="message">{{ p.message }}</div>
+                    <div class="message">{{ p.contents }}</div>
                 </div>
                 {% endfor %}
             </div>

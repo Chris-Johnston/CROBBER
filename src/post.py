@@ -11,6 +11,7 @@ class Post():
         self.author = author
         self.contents = contents
         self.points = points
+        self.img = 'crob'
 
 # TODO write a util for converting human text into "CAW"s
 

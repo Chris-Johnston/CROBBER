@@ -1,11 +1,13 @@
 from flask import Flask, send_from_directory, session, url_for, request, flash, redirect, render_template, g
 import os
 import sqlite3
-from post import Post
+from post import Post, translate_message
 import hashlib
 import time
 
 app = Flask(__name__)
+
+images = ['angry-crob', 'crob-viking', 'crob', 'goatee-crob', 'interest-crob', 'thunder-crob', 'void-crob']
 
 # totally secret
 # security for this app is a joke
@@ -51,6 +53,14 @@ def get_posts():
         posts = []
         for row in cur.fetchall():
             print(row)
+            p = Post(row[1], row[2], row[4])
+            username = row[1]
+            user_hash = int(hashlib.sha1(username.encode('utf-8')).hexdigest(), 16) % (10 ** 8)
+            image = images[user_hash % len(images)]
+            p.img = image
+            posts.append(p)
+        return posts
+    return None
         
 
 @app.teardown_appcontext
@@ -64,11 +74,13 @@ def close_db_connection(exception):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index.html')
 def landing():
-    get_posts()
+    posts = get_posts()
+    print(len(posts))
     if 'user_id' in session and session['user_id']:
         # logged in
         return render_template('homepage.html', user_id = session['user_id'],
-            posts=[Post("CRAWWWW", "CAW CAW CAW"), Post("CRAWWWWW", "caw caw caw.")])
+            posts=posts,
+            username=session['username'])
     # not logged in
     return send_from_directory('static', filename='landing.html')
 
@@ -86,7 +98,9 @@ def post_messge(author: str, message: str):
     with app.app_context():
         db = get_db()
         cur = db.cursor()
-        cur.execute('''INSERT INTO posts (content, posted, fries, author) VALUES (?, ?, ?, ?);''', (message, (int)time.time(), 1, author))
+        message = translate_message(message)
+        cur.execute('''INSERT INTO posts (content, posted, fries, author) VALUES (?, ?, ?, ?);''', (message, time.time(), 1, author))
+        print(f'inserting message {message} from user {author}')
         db.commit()
 
 @app.route('/caw', methods=['POST'])
