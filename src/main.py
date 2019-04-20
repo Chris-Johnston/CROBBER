@@ -38,9 +38,9 @@ def caw():
         if 'le_caw' in request.form and request.form['le_caw']:
             user_id = session['user_id']
             message = request.form['le_caw']
+            # TODO post this to the thing
     # not logged in, yell at them to log in
     return redirect('/')
-
 
 @app.route('/craww', methods=['POST'])
 @app.route('/login', methods=['POST'])
