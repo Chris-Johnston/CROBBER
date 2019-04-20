@@ -13,6 +13,11 @@
             <h1>
                 YEET {{ user_id }}
             </h1>
+            <h3>Tell your fellow crobs how you're cawwing today.</h2>
+            <form method="POST" action="/caw">
+                <textarea name="le_caw" placeholder="cawwwww"></textarea>
+                <button type="submit">Caw</button>
+            </form>
             <div class="posts">
                 {% for p in posts %}
                 <div class="caw">
