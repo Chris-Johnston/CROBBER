@@ -6,6 +6,7 @@ from post import Post
 app = Flask(__name__)
 # totally secret
 # security for this app is a joke
+# because this app is a joke
 app.secret_key = 'CRAWWWW'
 
 @app.route('/')
@@ -13,16 +14,35 @@ app.secret_key = 'CRAWWWW'
 def landing():
     if 'user_id' in session and session['user_id']:
         # logged in
-        return render_template('homepage.html', user_id = session['user_id'])
+        return render_template('homepage.html', user_id = session['user_id'],
+            posts=[Post("CRAWWWW", "CAW CAW CAW"), Post("CRAWWWWW", "caw caw caw.")])
     # not logged in
     return send_from_directory('static', filename='landing.html')
 
+@app.route('/crawwwwww')
 @app.route('/logout')
 def logout():
     if 'user_id' in session:
         session['user_id'] = None
     return redirect('/')
 
+@app.route('/caw', methods=['POST'])
+def caw():
+    """
+    new post, from form parameters
+
+    message is from le_caw
+    """
+    if 'user_id' in session and session['user_id']:
+        # logged in
+        if 'le_caw' in request.form and request.form['le_caw']:
+            user_id = session['user_id']
+            message = request.form['le_caw']
+    # not logged in, yell at them to log in
+    return redirect('/')
+
+
+@app.route('/craww', methods=['POST'])
 @app.route('/login', methods=['POST'])
 def login():
     """
