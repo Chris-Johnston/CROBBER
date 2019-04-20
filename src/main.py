@@ -1,6 +1,7 @@
-from flask import Flask, send_from_directory, session, url_for, request, flash, redirect
+from flask import Flask, send_from_directory, session, url_for, request, flash, redirect, render_template
 import os
 import sqlite3
+from post import Post
 
 app = Flask(__name__)
 # totally secret
@@ -12,7 +13,7 @@ app.secret_key = 'CRAWWWW'
 def landing():
     if 'user_id' in session and session['user_id']:
         # logged in
-        return 'cool dude, you are logged in'
+        return render_template('homepage.html', user_id = session['user_id'])
     # not logged in
     return send_from_directory('static', filename='landing.html')
 
