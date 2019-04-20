@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, session, url_for, request, flash, redirect, render_template
+from flask import Flask, send_from_directory, session, url_for, request, flash, redirect, render_template, g
 import os
 import sqlite3
 from post import Post
@@ -8,6 +8,20 @@ app = Flask(__name__)
 # security for this app is a joke
 # because this app is a joke
 app.secret_key = 'CRAWWWW'
+DATABASE = 'craw.db'
+
+# http://flask.pocoo.org/docs/1.0/patterns/sqlite3/
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
+
+@app.teardown_appcontext
+def close_db_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
 @app.route('/')
 @app.route('/index.html')
