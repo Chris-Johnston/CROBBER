@@ -10,15 +10,21 @@
         </nav>
 
         <div class="container">
-            <h1 class="display-3">Welcome to Crobber</h1>
-            <h2>Social Media for CROBS.</h2>
+            <h1>
+                YEET {{ user_id }}
+            </h1>
+            <div class="posts">
+                {% for p in posts %}
+                <div class="caw">
+                    <div class="author">{{ p.author }}</div>
+                    <!-- TODO CROBATARS -->
+                    <div class="message">{{ p.message }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <a href="/logout">Craw :(</a>
         </div>
-        <form method="POST" action="/login">
-        user: <input type="text" name="username"/>
-        password: <input type="password" name="password"/>
-        <input type="submit" value="CRAWWWW!" />
-        
-        </form>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
