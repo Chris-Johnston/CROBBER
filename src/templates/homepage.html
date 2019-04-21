@@ -26,6 +26,13 @@
                     <div class="author">@{{ p.author }}</div>
                     <!-- TODO CROBATARS -->
                     <div class="message">{{ p.contents }}</div>
+                    <div class="fries">
+                        <form method="POST" action="/give_fry">
+                            <input readonly type="hidden" value="{{ p.idnum }}" name="postiboi"></input>
+                            <p>{{ p.points }} fries</p>
+                            <button type="submit">give <b>@{{ p.author }}</b> a french fry</button>
+                        </form>
+                    </div>
                 </div>
                 {% endfor %}
             </div>

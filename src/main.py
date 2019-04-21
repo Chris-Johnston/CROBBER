@@ -53,7 +53,7 @@ def get_posts():
         posts = []
         for row in cur.fetchall():
             print(row)
-            p = Post(row[1], row[2], row[4])
+            p = Post(row[0], row[1], row[2], row[4])
             username = row[1]
             user_hash = int(hashlib.sha1(username.encode('utf-8')).hexdigest(), 16) % (10 ** 8)
             image = images[user_hash % len(images)]
@@ -118,6 +118,20 @@ def caw():
             message = request.form['le_caw']
             post_messge(username, message)
     # not logged in, yell at them to log in
+    return redirect('/')
+
+@app.route('/give_fry', methods=['POST'])
+def fries_for_crobs():
+    post_id = ''
+    import pdb; pdb.set_trace()
+    if 'user_id' in session and session['user_id']:
+        # logged in
+        if 'postiboi' in request.form and request.form['postiboi']:
+            post_id = request.form.get('postiboi')
+            print("post id is " + str(post_id))
+    with app.app_context():
+        db = get_db()
+        cur = db.cursor()
     return redirect('/')
 
 def get_user_id(username: str, password: str) -> int:
