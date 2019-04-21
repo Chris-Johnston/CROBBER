@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn instance for CROBBER
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/var/www/CROBBER/src
+ExecStart=/usr/local/bin/gunicorn --workers 15 --bind unix:crobber.sock -m 007 wsgi:application
+
+[Install]
+WantedBy=muti-user.target
