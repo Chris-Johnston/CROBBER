@@ -123,15 +123,20 @@ def caw():
 @app.route('/give_fry', methods=['POST'])
 def fries_for_crobs():
     post_id = ''
-    import pdb; pdb.set_trace()
     if 'user_id' in session and session['user_id']:
         # logged in
         if 'postiboi' in request.form and request.form['postiboi']:
             post_id = request.form.get('postiboi')
+            fries = request.form.get('frybois')
             print("post id is " + str(post_id))
-    with app.app_context():
-        db = get_db()
-        cur = db.cursor()
+            print(type(post_id))
+            print("current fry count is " + str(fries))
+            print(type(fries))
+            with app.app_context():
+                db = get_db()
+                cur = db.cursor()
+                cur.execute('''UPDATE posts SET fries = ? WHERE id = ?''', (str(int(fries) + 1), post_id))
+                db.commit()
     return redirect('/')
 
 def get_user_id(username: str, password: str) -> int:

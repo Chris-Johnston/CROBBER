@@ -29,6 +29,8 @@
                     <div class="fries">
                         <form method="POST" action="/give_fry">
                             <input readonly type="hidden" value="{{ p.idnum }}" name="postiboi"></input>
+                            <input readonly type="hidden" value="{{ p.points }}" name="frybois"></input>
+                            <!-- to do: dynamically say fry/fries depending on quantity -->
                             <p>{{ p.points }} fries</p>
                             <button type="submit">give <b>@{{ p.author }}</b> a french fry</button>
                         </form>
