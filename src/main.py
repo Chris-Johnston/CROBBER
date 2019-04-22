@@ -122,7 +122,6 @@ def caw():
 
 @app.route('/give_fry', methods=['POST'])
 def fries_for_crobs():
-    post_id = ''
     if 'user_id' in session and session['user_id']:
         # logged in
         if 'postiboi' in request.form and request.form['postiboi']:
