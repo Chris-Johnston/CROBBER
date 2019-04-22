@@ -135,7 +135,7 @@ def fries_for_crobs():
             with app.app_context():
                 db = get_db()
                 cur = db.cursor()
-                cur.execute('''UPDATE posts SET fries = ? WHERE id = ?''', (str(int(fries) + 1), post_id))
+                cur.execute('''UPDATE posts SET fries = ? WHERE id = ?''', (int(fries) + 1, post_id))
                 db.commit()
     return redirect('/')
 
