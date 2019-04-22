@@ -128,7 +128,6 @@ def fries_for_crobs():
         if 'postiboi' in request.form and request.form['postiboi']:
             post_id = request.form.get('postiboi')
             fries = request.form.get('frybois')
-            print("post id is " + str(post_id))
             print(type(post_id))
             print("current fry count is " + str(fries))
             print(type(fries))
