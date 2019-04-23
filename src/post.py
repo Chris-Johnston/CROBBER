@@ -7,13 +7,12 @@ import re
 import random
 
 class Post():
-    def __init__(self, author: str = "No Author", contents: str = "CAW CAW CAW", points: int = -1):
+    def __init__(self, idnum: int = -1, author: str = "No Author", contents: str = "CAW CAW CAW", points: int = -1):
+        self.idnum = idnum
         self.author = author
         self.contents = contents
         self.points = points
         self.img = 'crob'
-
-# TODO write a util for converting human text into "CAW"s
 
 # defines valid regex for a message
 # valid_regex = re.compile('((k|c)r?a+w+\s?)+', flags=re.RegexFlag.I)
