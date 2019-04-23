@@ -32,9 +32,9 @@
                             <input readonly type="hidden" value="{{ p.points }}" name="frybois"></input>
                             <!-- to do: dynamically say fry/fries depending on quantity -->
                             {% if p.points == 1 %}
-                            <p>{{ p.points }} fry</p>
+                            <label>&#127839; {{ p.points }} fry</label>
                             {% else %}
-                            <p>{{ p.points }} fries</p>
+                            <label>&#127839; {{ p.points }} fries</label>
                             {% endif %}
                             <button type="submit">give <b>@{{ p.author }}</b> a french fry</button>
                         </form>
